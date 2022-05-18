@@ -41,9 +41,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         User userobj = userList.get(position);
-        holder.ddescription.setText(userobj.getDescription());
+        String desc = userobj.getDescription();
+        holder.ddescription.setText(desc);
         holder.dname.setText(userobj.getName());
         holder.dimages.setImageResource(images);
+
+        if (desc.endsWith("7")){
+            holder.hugeicon.setVisibility(View.VISIBLE);
+        }
+
         holder.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,12 +86,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView ddescription;
         ImageView dimages;
         CardView profile;
+        CardView hugeicon;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dname = itemView.findViewById(R.id.Name);
             ddescription = itemView.findViewById(R.id.Description);
             dimages = itemView.findViewById(R.id.homeicon);
             profile = itemView.findViewById(R.id.profile);
+            hugeicon = itemView.findViewById(R.id.hugeicon);
         }
     }
 }
