@@ -10,11 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Random;
-
 public class MainActivity extends AppCompatActivity {
     private String TAG = "Main Activity";
-    User myUser = new User("MAD", "i am MAD", 1, true);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView dname = findViewById(R.id.helloWorld);
         TextView ddescription = findViewById(R.id.Description);
 
-        helloUser(myUser, dfollow, dname, ddescription);
+        User myUser = helloUser(dfollow, dname, ddescription);
         dfollow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -54,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void helloUser(User myUser, Button dfollow, TextView dname, TextView ddescription){
+    public User helloUser(Button dfollow, TextView dname, TextView ddescription){
+        Intent recievetomain = getIntent();
+        User myUser = (User) recievetomain.getSerializableExtra("user");
+
         if (myUser.isFollowed() == false){
             dfollow.setText("Follow");
         }
@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
             dfollow.setText("Unfollow");
         }
         ddescription.setText(myUser.getDescription());
-        Intent recievetomain = getIntent();
-        Integer randomnum = recievetomain.getIntExtra("randomnum",0);
-        dname.setText(myUser.getName() + " " + randomnum);
+        dname.setText(myUser.getName());
+        return myUser;
     }
 }

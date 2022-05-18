@@ -1,6 +1,9 @@
 package sg.edu.np.mad.pratical;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -34,11 +39,35 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         User userobj = userList.get(position);
         holder.ddescription.setText(userobj.getDescription());
         holder.dname.setText(userobj.getName());
         holder.dimages.setImageResource(images);
+        holder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ct);
+                builder.setTitle("Profile");
+                builder.setMessage(userobj.getName());
+                builder.setCancelable(false);
+                builder.setPositiveButton("View", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent sendtomain = new Intent(ct, MainActivity.class);
+                        sendtomain.putExtra("user", userList.get(position));
+                        ct.startActivity(sendtomain);
+                    }
+                });
+                builder.setNegativeButton("Close", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -50,11 +79,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         TextView dname;
         TextView ddescription;
         ImageView dimages;
+        CardView profile;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dname = itemView.findViewById(R.id.Name);
             ddescription = itemView.findViewById(R.id.Description);
             dimages = itemView.findViewById(R.id.homeicon);
+            profile = itemView.findViewById(R.id.profile);
         }
     }
 }
